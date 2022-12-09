@@ -18,8 +18,8 @@
 /[Rr]ecordings/
 
 # Artifacts can (*do) get excessive in size
-/[Ll]ibrary/[Aa]rtifacts/
-/[Ll]ibrary/[Aa]rtifactDB
+/[Aa]rtifacts/
+ArtifactDB
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
