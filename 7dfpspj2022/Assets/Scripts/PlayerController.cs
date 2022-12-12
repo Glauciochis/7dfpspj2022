@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
         if (CanControl && CanMove)
         { Velocity += ((hv * m.x) + (vv * m.y)) * Time.deltaTime * 12; }
 
-            // LOOKING
+        // LOOKING
         pitch = Mathf.Max(Mathf.Min(pitch, 90), -90);
         head.transform.localEulerAngles = new Vector3(pitch, yaw, roll);
         head.transform.localPosition = HeadLean + new Vector3(0, headheight, 0);
