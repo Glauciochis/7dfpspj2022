@@ -39,6 +39,9 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector] public Vector2 Movement;
 
+    public List<Firearm> Firearms;
+    public int SelectedFirearm = 0;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -119,5 +122,24 @@ public class PlayerController : MonoBehaviour
     {
         isJumping = isGrounded ? (input.isPressed && CanControl) : false;
         if (isJumping) { Velocity.y = jumpboost; currentjump = 0; }
+    }
+    void OnFire(InputValue input)
+    {
+        if (input.isPressed) { Firearms[SelectedFirearm].PressTrigger(); }
+        else { Firearms[SelectedFirearm].ReleaseTrigger(); }
+    }
+    void OnReload(InputValue input)
+    {
+        if (input.isPressed) { Firearms[SelectedFirearm].Reload(); }
+    }
+    void OnScroll(InputValue input)
+    {
+        Firearms[SelectedFirearm].gameObject.SetActive(false);
+
+        SelectedFirearm += Mathf.Min(Mathf.Max((int)input.Get<float>(), -1), 1);
+        if (SelectedFirearm > Firearms.Count - 1) { SelectedFirearm = 0; }
+        else if (SelectedFirearm < 0) { SelectedFirearm = Firearms.Count - 1; }
+
+        Firearms[SelectedFirearm].gameObject.SetActive(true);
     }
 }
