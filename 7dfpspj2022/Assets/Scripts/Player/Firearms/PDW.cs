@@ -23,7 +23,8 @@ public class PDW : MonoBehaviour
 
         Bullet b = go.GetComponent<Bullet>();
         b.Impact = .2f;
-        b.Velocity = (cam.forward + (Random.insideUnitSphere * .15f)) * .6f;
+        b.Damage = 5f;
+        b.Velocity = (cam.forward + (Random.insideUnitSphere * .05f)) * .6f;
     }
     public void ReleaseAmmo()
     { firearm.Ammo = 0; UpdateRounds(); }

@@ -13,9 +13,8 @@ public class Firearm : MonoBehaviour
     void Start() { ani = GetComponent<Animator>(); }
 
     public void PressTrigger()
-    { if (Ammo > 0) { ani.SetBool("Firing", true); } else { ani.SetTrigger("Reload"); } }
-    public void ReleaseTrigger()
-    { ani.SetBool("Firing", false); }
-    public void Reload()
-    { ani.SetTrigger("Reload"); }
+    { if (Ammo > 0) { ani.SetBool("Firing", true); } else { ani.SetBool("Reload", true); } }
+    public void ReleaseTrigger() { ani.SetBool("Firing", false); }
+    public void Reload() { ani.SetBool("Reload", true); }
+    public void ReloadComplete() { ani.SetBool("Reload", false); }
 }

@@ -24,7 +24,8 @@ public class Handgun : MonoBehaviour
 
         Bullet b = go.GetComponent<Bullet>();
         b.Impact = .5f;
-        b.Velocity = (cam.forward + (Random.insideUnitSphere * .05f)) * .6f;
+        b.Damage = 15f;
+        b.Velocity = (cam.forward + (Random.insideUnitSphere * .02f)) * .6f;
     }
     public void ReleaseAmmo()
     { firearm.Ammo = 0; }
