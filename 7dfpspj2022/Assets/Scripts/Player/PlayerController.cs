@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour
     private Camera cam;
     [SerializeField] private Transform head;
     [SerializeField] private Transform groundsphere;
+    [SerializeField] private GameObject contextUI;
+    [SerializeField] private TMPro.TMP_Text contexttext;
+    private GameObject hoverObject;
 
     private float pitch = 0;
     private float yaw = 0;
@@ -18,13 +21,13 @@ public class PlayerController : MonoBehaviour
     // private movement things
     private float currentjump = 0;
     private float jumpheight = .4f;
-    private float jumpboost = 2f;
+    private float jumpboost = 7f;
 
     [HideInInspector] public Vector3 Velocity;
     [HideInInspector] public Vector3 HeadLean;
     [HideInInspector] public bool isGrounded;
+    [HideInInspector] public bool isMoving;
     [HideInInspector] public bool isRunning;
-    [HideInInspector] public bool isWalking;
     [HideInInspector] public bool isJumping;
     [HideInInspector] public bool isCrouching;
     [HideInInspector] public bool wasGrounded;
@@ -65,8 +68,12 @@ public class PlayerController : MonoBehaviour
         Vector3 hv = new Vector3(Mathf.Cos(Mathf.Deg2Rad * -yaw), 0, Mathf.Sin(Mathf.Deg2Rad * -yaw));
         Vector3 vv = new Vector3(Mathf.Cos((Mathf.Deg2Rad * -yaw) + Mathf.PI / 2), 0, Mathf.Sin((Mathf.Deg2Rad * -yaw) + Mathf.PI / 2));
         // move
-        if (CanControl && CanMove)
-        { Velocity += ((hv * m.x) + (vv * m.y)) * Time.deltaTime * 12; }
+        isMoving = false;
+        if (CanControl && CanMove && m.magnitude > 0)
+        {
+            isMoving = true;
+            Velocity += ((hv * m.x) + (vv * m.y)) * Time.deltaTime * 12;
+        }
 
         // LOOKING
         pitch = Mathf.Max(Mathf.Min(pitch, 90), -90);
@@ -81,23 +88,37 @@ public class PlayerController : MonoBehaviour
             if (currentjump >= jumpheight) { isJumping = false; }
         }
 
+        // INTERACTION
+        contextUI.SetActive(false);
+        hoverObject = null;
+        if (Physics.Raycast(new Ray(cam.transform.position, cam.transform.forward), out RaycastHit ihit, 2))
+        {
+            if (ihit.transform.gameObject.TryGetComponent(out InteractionObject io))
+            { contexttext.text = io.Context; contextUI.SetActive(true); }
+
+            hoverObject = ihit.transform.gameObject;
+        }
+    }
+    void FixedUpdate()
+    {
         // PHYSICS
         // get det ray
         var rayDown = new Ray(transform.position, Vector3.down);
         // move with velocity
-        Velocity.y -= (4f * Time.deltaTime) + ((isJumping ? 0 : 8f) * Time.deltaTime);
+        Velocity.y -= .2f + (isJumping ? 0 : .3f);
         if (isGrounded && Velocity.y < 0 && !isJumping) { Velocity.y = 0; }
-        charcon.Move(Velocity * Time.deltaTime);
-        Velocity.x *= .95f;
-        Velocity.z *= .95f;
+        charcon.Move(Velocity * .01f);
+        Velocity.x *= .9f;
+        Velocity.z *= .9f;
 
         // SLOPE CORRECTION
-        if (isGrounded && Physics.Raycast(rayDown, out RaycastHit ghit, LayerMask.GetMask("Ground")))
+        if (isGrounded && isMoving && !isJumping && Physics.Raycast(rayDown, out RaycastHit ghit, LayerMask.GetMask("Ground")))
         {
             var rayDown2 = new Ray(transform.position, Vector3.down);
             if (Physics.Raycast(rayDown2, out RaycastHit ghit2, LayerMask.GetMask("Ground")))
             {
-                charcon.Move(new Vector3(0, ghit2.point.y - ghit.point.y, 0));
+                if (Mathf.Abs(ghit2.point.y - ghit.point.y) <= .25f)
+                { charcon.Move(new Vector3(0, ghit2.point.y - ghit.point.y, 0)); }
             }
         }
     }
@@ -141,5 +162,9 @@ public class PlayerController : MonoBehaviour
         else if (SelectedFirearm < 0) { SelectedFirearm = Firearms.Count - 1; }
 
         Firearms[SelectedFirearm].gameObject.SetActive(true);
+    }
+    void OnInteract(InputValue input)
+    {
+        if (hoverObject && input.isPressed) { hoverObject.SendMessage("OnInteract", this, SendMessageOptions.DontRequireReceiver); }
     }
 }
