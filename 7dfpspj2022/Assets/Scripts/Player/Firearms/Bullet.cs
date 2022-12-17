@@ -18,8 +18,6 @@ public class Bullet : MonoBehaviour
         // Physics.SphereCast(oldp, .1f, jj, out RaycastHit hit, jj.magnitude, ~LayerMask.NameToLayer("Player"))
         if (Physics.SphereCast(oldp, .1f, jj, out RaycastHit hit, jj.magnitude, ~LayerMask.GetMask("Player")))//Physics.Linecast(oldp, transform.position, out RaycastHit hit))
         {
-            Debug.Log(hit.transform.name);
-
             hit.transform.gameObject.SendMessage("OnShot", this, SendMessageOptions.DontRequireReceiver);
 
             if (hit.rigidbody) { hit.rigidbody.AddForceAtPosition(hit.normal*300*Impact, hit.point); }
