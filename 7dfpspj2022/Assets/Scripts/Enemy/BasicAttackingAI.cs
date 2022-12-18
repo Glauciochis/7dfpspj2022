@@ -23,6 +23,8 @@ public class BasicAttackingAI : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         ALLACTIVE.Add(this);
+
+        target = WorldBase.player.transform;
     }
 
     void Update()
@@ -52,9 +54,6 @@ public class BasicAttackingAI : MonoBehaviour
         //var v = new Vector3(0, Mathf.Atan2(ap.z - tap.z, ap.x - tap.x), 0);
         //transform.rotation = Quaternion.Euler(v);
         animator.SetTrigger("Attack");
-
-        // attack the target
-        Debug.LogWarning("Attacking!");
     }
     public void AttackFinished() { Retreat(); }
     public void AttackClimax()
@@ -74,20 +73,23 @@ public class BasicAttackingAI : MonoBehaviour
         retreatDirection += transform.position;
 
         // move towards the retreat position
-        agent.isStopped = false;
-        agent.SetDestination(retreatDirection);
-        animator.SetBool("Walking", true);
+        if (agent.enabled)
+        {
+            agent.isStopped = false;
+            agent.SetDestination(retreatDirection);
+            animator.SetBool("Walking", true);
+        }
     }
 
     void OnDeath()
     {
         animator.SetBool("Dead", true);
         ALLACTIVE.Remove(this);
-        foreach (var aa in ALLACTIVE) { if (aa != this) { aa.Retreat(); } }
+        //foreach (var aa in ALLACTIVE) { if (aa != this) { aa.Retreat(); } }
         Collider[] cols = GetComponents<Collider>();
         foreach (var c in cols) { c.enabled = false; }
-        agent.enabled = false;
+        if (TryGetComponent(out NavMeshAgent agent)) { agent.enabled = false; }
+        if (TryGetComponent(out SphereWander sw)) { sw.enabled = false; }
         enabled = false;
-        
     }
 }

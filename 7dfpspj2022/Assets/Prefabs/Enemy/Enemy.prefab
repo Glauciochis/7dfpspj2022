@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6605647670196615809}
   - component: {fileID: 6605647670196615815}
   - component: {fileID: 6605647670196615812}
+  - component: {fileID: 3642950899495340545}
   - component: {fileID: 6605647670196615834}
   m_Layer: 9
   m_Name: Enemy
@@ -57,7 +58,7 @@ NavMeshAgent:
   m_Height: 1
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 2
+  m_ObstacleAvoidanceType: 0
 --- !u!114 &6605647670196615815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,7 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6adeb0672ab26747a122fd029049dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 50
+  Health: 20
   Defense: 1
   Resistance: 0
 --- !u!114 &6605647670196615812
@@ -80,7 +81,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6605647670196615820}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 04fd97837e26c37448203f34903f1c62, type: 3}
   m_Name: 
@@ -91,6 +92,20 @@ MonoBehaviour:
   attackRange: 3
   retreatRange: 7
   rangeVarition: 3
+--- !u!114 &3642950899495340545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6605647670196615820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcd218131549ce84f987163c39c52da2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 6380209340080051957}
+  targetRadius: 10
 --- !u!135 &6605647670196615834
 SphereCollider:
   m_ObjectHideFlags: 0

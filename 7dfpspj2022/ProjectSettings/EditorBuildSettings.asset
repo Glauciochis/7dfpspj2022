@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: d1c3109bdb54ad54c8a2b2838528e640
+    path: Assets/Scenes/PrefabbingShip.unity
+    guid: cbf16ddd5cdbae34ab9d6ada054a0a82
+  - enabled: 1
+    path: Assets/Scenes/uwin.unity
+    guid: cdee1861b0b40bf4eaa48f5a4233e5e5
+  - enabled: 1
+    path: Assets/Scenes/ulooz.unity
+    guid: 731c942191c883a49b0a870b4af4d55d
   m_configObjects: {}

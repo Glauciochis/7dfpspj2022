@@ -12,6 +12,11 @@ public class InteractionSwitch : MonoBehaviour
 
     public GameObject Connection;
 
+    void Start()
+    {
+        meshFilter.mesh = Switch ? OnMesh : OffMesh;
+        if (Connection.TryGetComponent<Animator>(out Animator an)) { an.SetBool("Switch", Switch); }
+    }
     public void OnInteract(PlayerController player)
     {
         Switch = !Switch;

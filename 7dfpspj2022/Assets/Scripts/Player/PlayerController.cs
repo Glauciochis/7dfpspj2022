@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        WorldBase.player = this;
         Cursor.lockState = CursorLockMode.Locked;
         charcon = GetComponent<CharacterController>();
         cam = Camera.main;
