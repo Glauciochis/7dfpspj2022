@@ -5,8 +5,10 @@ using UnityEngine;
 public class PDW : MonoBehaviour
 {
     private Firearm firearm;
+
     public List<GameObject> Rounds;
     public GameObject BulletPrefab;
+    public AudioSource FireAudioSource;
 
     void Start() { firearm = GetComponent<Firearm>(); }
 
@@ -14,7 +16,7 @@ public class PDW : MonoBehaviour
     {
         firearm.Ammo--;
         UpdateRounds();
-        if (firearm.Ammo <= 0) { GetComponent<Animator>().SetBool("Firing", false); }
+        if (firearm.Ammo <= 0) { firearm.Reload(); GetComponent<Animator>().SetBool("Firing", false); OnTriggerRelease(); }
 
         var cam = Camera.main.transform;
 
@@ -39,4 +41,7 @@ public class PDW : MonoBehaviour
             else { Rounds[i].SetActive(true); }
         }
     }
+
+    void OnTriggerPressure() { FireAudioSource.Play(); }
+    void OnTriggerRelease() { FireAudioSource.Stop(); }
 }

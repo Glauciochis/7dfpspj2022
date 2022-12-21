@@ -18,6 +18,7 @@ public class SphereWander : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, WorldBase.player.transform.position) <= targetRadius)// && Physics.Linecast(transform.position+new Vector3(0, .5f, 0), WorldBase.player.transform.position, out RaycastHit hit))
         {
+            SendMessage("OnAlert", SendMessageOptions.DontRequireReceiver);
             GetComponent<BasicAttackingAI>().enabled = true;
             enabled = false;
             return;

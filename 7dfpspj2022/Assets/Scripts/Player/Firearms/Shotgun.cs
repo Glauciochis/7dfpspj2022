@@ -5,7 +5,9 @@ using UnityEngine;
 public class Shotgun : MonoBehaviour
 {
     private Firearm firearm;
+
     public GameObject BulletPrefab;
+    public AudioSource FireAudioSource;
 
     void Start() { firearm = GetComponent<Firearm>(); }
 
@@ -26,6 +28,8 @@ public class Shotgun : MonoBehaviour
             b.Damage = 4f;
             b.Velocity = (cam.forward + (Random.insideUnitSphere * .15f)) * .5f;
         }
+
+        FireAudioSource.Play();
     }
     public void ReleaseAmmo()
     { firearm.Ammo = 0; }

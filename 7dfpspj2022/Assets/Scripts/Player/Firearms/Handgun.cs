@@ -8,6 +8,7 @@ public class Handgun : MonoBehaviour
 
     public TMPro.TMP_Text AmmoCounter;
     public GameObject BulletPrefab;
+    public AudioSource FireAudioSource;
 
     void Start() { firearm = GetComponent<Firearm>(); }
     void Update() { AmmoCounter.text = firearm.Ammo.ToString(); }
@@ -26,6 +27,8 @@ public class Handgun : MonoBehaviour
         b.Impact = .5f;
         b.Damage = 15f;
         b.Velocity = (cam.forward + (Random.insideUnitSphere * .02f)) * .6f;
+
+        FireAudioSource.Play();
     }
     public void ReleaseAmmo()
     { firearm.Ammo = 0; }

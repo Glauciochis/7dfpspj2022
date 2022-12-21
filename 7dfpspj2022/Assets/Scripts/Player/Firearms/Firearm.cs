@@ -5,6 +5,7 @@ using UnityEngine;
 public class Firearm : MonoBehaviour
 {
     private Animator ani;
+    public AudioSource ReloadAudioSource;
 
     public int MaxAmmo = 8;
     public int Ammo = 8;
@@ -13,8 +14,23 @@ public class Firearm : MonoBehaviour
     void Start() { ani = GetComponent<Animator>(); }
 
     public void PressTrigger()
-    { if (Ammo > 0) { ani.SetBool("Firing", true); } else { ani.SetBool("Reload", true); } }
-    public void ReleaseTrigger() { ani.SetBool("Firing", false); }
-    public void Reload() { ani.SetBool("Reload", true); }
+    {
+        if (Ammo > 0)
+        {
+            SendMessage("OnTriggerPressure", SendMessageOptions.DontRequireReceiver);
+            ani.SetBool("Firing", true);
+        }
+        else
+        {
+            if (!ani.GetBool("Reload")) { Reload(); }
+            ani.SetBool("Reload", true);
+        }
+    }
+    public void ReleaseTrigger()
+    {
+        SendMessage("OnTriggerRelease", SendMessageOptions.DontRequireReceiver);
+        ani.SetBool("Firing", false);
+    }
+    public void Reload() { ani.SetBool("Reload", true); ReloadAudioSource.Play(); }
     public void ReloadComplete() { ani.SetBool("Reload", false); }
 }
